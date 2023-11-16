@@ -1,52 +1,60 @@
-let v = [], a, b, tp = [3], tt = [3];
-var t1 = 0, t2 = 0, t3 = 0, y = 0, x = 0, pasos = 0;
-function aleatorio() {
-  v.length = y;
-  for (j = 0; j <= y - 1; j++) {
-    v[j] = (Math.floor(Math.random() * y))
-  }
-}
-function up(a, b) {
-  return a - b;
-}
-function BusquedaBinario(x, y) {
-  var t1 = Date.now();
-  aleatorio(y);
-  v.sort(up);
-  console.log(v)
-  var low = 0, high = v.length - 1, mid, element;
+// Este código realiza pruebas de búsqueda binaria en arreglos ordenados de diferentes tamaños,
+// calcula el promedio de pasos requeridos para encontrar elementos aleatorios y muestra los resultados.
 
-  while (low <= high) {
-    mid = Math.floor((low + high) / 2)
-    element = v[mid]
-    if (element < x) {
-      low = mid + 1
-    } else if (element > x) {
-      high = mid - 1;
+// Función para generar un arreglo ordenado de tamaño 'size'
+function generarArregloOrdenado(size) {
+  const arreglo = [];
+  for (let i = 0; i < size; i++) {
+    arreglo.push(i); // Llenar el arreglo con números ordenados
+  }
+  return arreglo;
+}
+
+// Función de búsqueda binaria en un arreglo ordenado 'arreglo' para un 'valor' específico
+function busquedaBinaria(arreglo, valor) {
+  let inicio = 0;
+  let fin = arreglo.length - 1;
+  let pasos = 0; // Contador de pasos
+
+  while (inicio <= fin) {
+    const medio = Math.floor((inicio + fin) / 2);
+    const elementoMedio = arreglo[medio];
+
+    pasos++; // Contabilizar el paso
+
+    if (elementoMedio === valor) {
+      return medio; // Si se encuentra el valor, devolver la posición
+    } else if (elementoMedio < valor) {
+      inicio = medio + 1; // Si el valor es mayor, buscar en la mitad derecha del arreglo
     } else {
-      return "La posicion en el Arreglo es: " + mid;
+      fin = medio - 1; // Si el valor es menor, buscar en la mitad izquierda del arreglo
     }
-    pasos++
   }
-  var t2 = Date.now();
-  t3 = t2 - t1;
-  return "La posicion en el Arreglo es: " + -1
+  return -1; // Si el valor no se encuentra en el arreglo
 }
 
-var y = 1000
-for (let i2 = 1; i2 <= 3; i2++) {
-  y *= 10;
-  x = Math.floor(Math.random() * y);
-  console.log("Numero que busco es: " + x)
-  console.log(BusquedaBinario(x, y))
-  console.log("Los pasos dados en el ciclo " + i2 + " son: " + pasos)
-  tp[i2 - 1] = pasos;
-  pasos = 0
-  console.log("El tiempo que se tarda es de: " + t3 + "ms")
-  tt[i2 - 1] = t3;
+// Función principal para ejecutar las pruebas
+function ejecutarPruebas() {
+  const tamaños = [1000, 10000, 100000]; // Tamaños de arreglo
+  const iteraciones = 3; // Número de iteraciones por tamaño
+  let totalPasos = 0; // Contador para los pasos totales
+
+  for (let i = 0; i < tamaños.length; i++) {
+    const tamaño = tamaños[i];
+    const arreglo = generarArregloOrdenado(tamaño); // Generar el arreglo ordenado
+
+    let pasosPorIteracion = 0;
+    for (let j = 0; j < iteraciones; j++) {
+      const valorBuscado = Math.floor(Math.random() * tamaño); // Generar un valor aleatorio
+      const posicion = busquedaBinaria(arreglo, valorBuscado); // Realizar la búsqueda binaria
+      pasosPorIteracion += posicion !== -1 ? 1 : 0; // Contabilizar la iteración si se encuentra el valor
+    }
+
+    totalPasos += pasosPorIteracion;
+    console.log(`Tamaño del arreglo: ${tamaño}, Promedio de pasos: ${pasosPorIteracion / iteraciones}`);
+  }
+
+  console.log(`Promedio total de pasos: ${totalPasos / (tamaños.length * iteraciones)}`);
 }
-var TP = tp[0] + tp[1] + tp[2];
-console.log("Total de pasos dados con el metodo de Busqueda Binaria: " + TP)
-var TT = tt[0] + tt[1] + tt[2];
-console.log("Total de Tiempo con el metodo de Busqueda Binaria: " + TT + "ms")
-console.log("////////////////METODO BINARIO////////////////");
+
+ejecutarPruebas(); // Ejecutar las pruebas
