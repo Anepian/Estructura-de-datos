@@ -1,43 +1,59 @@
-let a = [], b = [], x, y, nr, k = 0, repetido = 0;
-function aleatorio(a) {
-  a.length = x;
-  b.length = y;
-  for (j = 0; j <= x - 1; j++) {
-    a[j] = Math.floor(Math.random() * ((x - 1) - 1 + 1) + 1);
-    //generar los 5 grupos de numeros aleatorios
+// Programa: Encuentra el número mayoritario en un array aleatorio
+// Este programa genera un array con números aleatorios y encuentra el número que se repite más de la mitad de las veces en el array.
+
+// Declaración de variables
+let a = [],
+  b = [],
+  x,
+  y,
+  nr,
+  k = 0,
+  repetido = 0;
+
+// Genera un array con números aleatorios
+function generarArrayAleatorio(longitud) {
+  a.length = longitud;
+  for (let j = 0; j < longitud; j++) {
+    a[j] = Math.floor(Math.random() * (longitud - 1) + 1);
   }
-  console.log(a);//mostrar array desordenado
+  console.log("Array desordenado:", a);
 }
 
-function repeticiones(x) {
-  y = x - 1
-  aleatorio(a)
-  for (l = 0; l <= y; l++) {
+// Encuentra el número más repetido en el array generado
+function encontrarNumeroMasRepetido(longitud) {
+  y = longitud - 1;
+  generarArrayAleatorio(longitud);
+
+  for (let l = 0; l <= y; l++) {
     b[l] = 0;
   }
   k = 1;
+
   do {
-    for (i = 0; i < a.length; i++) {
-      //alert(k+ "=="+ a[i] + "?")
-      if (k == a[i]) {
-        b[k - 1] = parseInt(b[k - 1]) + 1
+    for (let i = 0; i < a.length; i++) {
+      if (k === a[i]) {
+        b[k - 1]++;
       }
     }
     k++;
-  } while (k < x);
-  for (j = 0; j < b.length; j++) {
+  } while (k < longitud);
+
+  for (let j = 0; j < b.length; j++) {
     if (b[j] >= repetido) {
       repetido = b[j];
       nr = j + 1;
     }
   }
-  aux = Math.floor((a.length / 2))
-  if (repetido > aux) {
-    console.log("El numero mayoritario es: " + nr + " repitiendose: " + repetido + " veces")
-  }
-  else {
-    console.log("No existe un numero mayoritario")
+
+  const mitadArray = Math.floor(a.length / 2);
+  if (repetido > mitadArray) {
+    console.log(
+      "El número mayoritario es: " + nr + " repitiéndose: " + repetido + " veces"
+    );
+  } else {
+    console.log("No existe un número mayoritario");
   }
 }
 
-repeticiones(x = 5)
+// Encuentra el número más repetido en un array de longitud 5
+encontrarNumeroMasRepetido(5);
